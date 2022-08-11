@@ -269,12 +269,15 @@ void DeclarationTypeChecker::endVisit(Mapping const& _mapping)
 	Type const* keyType = _mapping.keyType().annotation().type;
 	Type const* valueType = _mapping.valueType().annotation().type;
 
+	ASTString keyName = _mapping.keyName();
+	ASTString valueName = _mapping.valueName();
+
 	// Convert key type to memory.
 	keyType = TypeProvider::withLocationIfReference(DataLocation::Memory, keyType);
 
 	// Convert value type to storage reference.
 	valueType = TypeProvider::withLocationIfReference(DataLocation::Storage, valueType);
-	_mapping.annotation().type = TypeProvider::mapping(keyType, valueType);
+	_mapping.annotation().type = TypeProvider::mapping(keyType, valueType, keyName, valueName);
 }
 
 void DeclarationTypeChecker::endVisit(ArrayTypeName const& _typeName)

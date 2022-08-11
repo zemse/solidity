@@ -648,7 +648,9 @@ ASTPointer<Mapping> ASTJsonImporter::createMapping(Json::Value const&  _node)
 	return createASTNode<Mapping>(
 		_node,
 		convertJsonToASTNode<TypeName>(member(_node, "keyType")),
-		convertJsonToASTNode<TypeName>(member(_node, "valueType"))
+		convertJsonToASTNode<TypeName>(member(_node, "valueType")),
+		memberAsASTString(_node, "keyName"),
+		memberAsASTString(_node, "valueName")
 	);
 }
 

@@ -1510,8 +1510,8 @@ private:
 class MappingType: public CompositeType
 {
 public:
-	MappingType(Type const* _keyType, Type const* _valueType):
-		m_keyType(_keyType), m_valueType(_valueType) {}
+	MappingType(Type const* _keyType, Type const* _valueType, ASTString _keyName, ASTString _valueName):
+		m_keyType(_keyType), m_valueType(_valueType), m_keyName(_keyName), m_valueName(_valueName) {}
 
 	Category category() const override { return Category::Mapping; }
 
@@ -1532,6 +1532,8 @@ public:
 
 	Type const* keyType() const { return m_keyType; }
 	Type const* valueType() const { return m_valueType; }
+	ASTString keyName() const { return m_keyName; }
+	ASTString valueName() const { return m_valueName; }
 
 protected:
 	std::vector<Type const*> decomposition() const override { return {m_valueType}; }
@@ -1539,6 +1541,8 @@ protected:
 private:
 	Type const* m_keyType;
 	Type const* m_valueType;
+	ASTString m_keyName;
+	ASTString m_valueName;
 };
 
 /**
