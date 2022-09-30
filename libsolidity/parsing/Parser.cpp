@@ -1189,9 +1189,10 @@ ASTPointer<Mapping> Parser::parseMapping()
 	else
 		keyName = make_shared<ASTString>("");
 	expectToken(Token::DoubleArrow);
+	bool isValueTypeMapping = m_scanner->currentToken() == Token::Mapping;
 	ASTPointer<TypeName> valueType = parseTypeName();
 	ASTPointer<ASTString> valueName;
-	if (m_scanner->currentToken() == Token::Identifier)
+	if (!isValueTypeMapping && m_scanner->currentToken() == Token::Identifier)
 		valueName = getLiteralAndAdvance();
 	else
 		valueName = make_shared<ASTString>("");
