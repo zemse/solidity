@@ -267,9 +267,9 @@ void DeclarationTypeChecker::endVisit(Mapping const& _mapping)
 		solAssert(dynamic_cast<ElementaryTypeName const*>(&_mapping.keyType()), "");
 
 	Type const* keyType = _mapping.keyType().annotation().type;
-	Type const* valueType = _mapping.valueType().annotation().type;
-
 	ASTString keyName = _mapping.keyName();
+
+	Type const* valueType = _mapping.valueType().annotation().type;
 	ASTString valueName = _mapping.valueName();
 
 	// Convert key type to memory.
@@ -277,7 +277,7 @@ void DeclarationTypeChecker::endVisit(Mapping const& _mapping)
 
 	// Convert value type to storage reference.
 	valueType = TypeProvider::withLocationIfReference(DataLocation::Storage, valueType);
-	_mapping.annotation().type = TypeProvider::mapping(keyType, valueType, keyName, valueName);
+	_mapping.annotation().type = TypeProvider::mapping(keyType, keyName, valueType, valueName);
 
 	// Check if parameter names are conflicting.
 	if (keyName != "")

@@ -1510,8 +1510,8 @@ private:
 class MappingType: public CompositeType
 {
 public:
-	MappingType(Type const* _keyType, Type const* _valueType, ASTString _keyName, ASTString _valueName):
-		m_keyType(_keyType), m_valueType(_valueType), m_keyName(_keyName), m_valueName(_valueName) {}
+	MappingType(Type const* _keyType, ASTString _keyName, Type const* _valueType, ASTString _valueName):
+		m_keyType(_keyType), m_keyName(_keyName), m_valueType(_valueType), m_valueName(_valueName) {}
 
 	Category category() const override { return Category::Mapping; }
 
@@ -1531,8 +1531,8 @@ public:
 	std::vector<std::tuple<std::string, Type const*>> makeStackItems() const override;
 
 	Type const* keyType() const { return m_keyType; }
-	Type const* valueType() const { return m_valueType; }
 	ASTString keyName() const { return m_keyName; }
+	Type const* valueType() const { return m_valueType; }
 	ASTString valueName() const { return m_valueName; }
 
 protected:
@@ -1540,8 +1540,8 @@ protected:
 
 private:
 	Type const* m_keyType;
-	Type const* m_valueType;
 	ASTString m_keyName;
+	Type const* m_valueType;
 	ASTString m_valueName;
 };
 

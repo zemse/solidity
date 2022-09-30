@@ -1198,7 +1198,7 @@ ASTPointer<Mapping> Parser::parseMapping()
 		valueName = make_shared<ASTString>("");
 	nodeFactory.markEndPosition();
 	expectToken(Token::RParen);
-	return nodeFactory.createNode<Mapping>(keyType, valueType, keyName, valueName);
+	return nodeFactory.createNode<Mapping>(keyType, keyName, valueType, valueName);
 }
 
 ASTPointer<ParameterList> Parser::parseParameterList(
