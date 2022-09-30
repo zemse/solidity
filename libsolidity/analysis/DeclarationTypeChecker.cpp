@@ -278,6 +278,46 @@ void DeclarationTypeChecker::endVisit(Mapping const& _mapping)
 	// Convert value type to storage reference.
 	valueType = TypeProvider::withLocationIfReference(DataLocation::Storage, valueType);
 	_mapping.annotation().type = TypeProvider::mapping(keyType, valueType, keyName, valueName);
+
+	// Check if parameter names are conflicting.
+	if (keyName != "")
+	{
+		auto childMappingType = dynamic_cast<MappingType const*>(valueType);
+		ASTString currentValueName = valueName;
+		while (true) {
+			// Value type is a mapping.
+			if (childMappingType)
+			{
+				// Compare top mapping's key name with child mapping's key name.
+				ASTString childKeyName = childMappingType->keyName();
+				if (keyName == childKeyName)
+				{
+					m_errorReporter.declarationError(
+						1809_error,
+						_mapping.location(),
+						"Conflicting parameter name \"" + keyName + "\" in recursive mapping."
+					);
+				}
+				auto valueType = childMappingType->keyType();
+				currentValueName = childMappingType->valueName();
+				childMappingType = dynamic_cast<MappingType const*>(valueType);
+			}
+			else
+			{
+				// Compare top mapping's key name with the value name.
+				if (keyName == currentValueName)
+				{
+					m_errorReporter.declarationError(
+						5609_error,
+						_mapping.location(),
+						"Conflicting parameter name \"" + keyName + "\" in " +
+							(valueName != currentValueName ? "recursive " : "") + "mapping."
+					);
+				}
+				break; // We arrived at the end of mapping recursion.
+			}
+		}
+	}
 }
 
 void DeclarationTypeChecker::endVisit(ArrayTypeName const& _typeName)
